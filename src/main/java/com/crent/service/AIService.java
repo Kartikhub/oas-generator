@@ -14,7 +14,7 @@ public class AIService {
     private static final String INITIAL_PROMPT = "Create an OpenAPI Spec using the below-provided DETAILS and STRICTLY follow the RULES for creating the openapi spec-\n" +
             "RULES\n" +
             "1. ONLY PROVIDE THE OpenAPI Spec without any other detail. Remember do not write anything else. I ONLY need a Yaml code snippet that's it. \n" +
-            "2. If in DETAIL section, SCHEMA and PATH information is not given, then create a user schema(only name and id) and one corresponding path with get HTTP method. \n" +
+            "2. If in DETAILS section, SCHEMA and PATH information is not given, then create a user schema(only name and id) and one corresponding path with get HTTP method. \n" +
             "\n" +
             "EXCEPTION OF RULES-\n" +
             "If in the DETAILS section, the information provided is not about how to create a OpenAPI Spec or there is no detail at all then skip all the Rules and provide the result as ERROR-Not a valid prompt for OpenAPI Spec. - ( THIS WILL BE THE ONLY EXCEPTION OF RULE 1)\n" +
@@ -44,9 +44,14 @@ public class AIService {
         String promptMessage = INITIAL_PROMPT + message;
         String callResult = chatClient.call(promptMessage);
         log.info("Result- {}", callResult);
-        String result = callResult.replace("```yaml\n", "").replace("\n```", "");
-        if(!result.startsWith(OAS_PREFIX)); {
+        //Make it fast by removing the char using index
+        String result = callResult.replace("```yaml\n", "").replace("\n```", "").trim();
+        log.info("Result after clearing- {}", result);
+        log.info("char at 0 -{} , at 1 - {}, at 3 - {}", result.charAt(0), result.charAt(1), result.charAt(3));
+        if(!result.startsWith(OAS_PREFIX)) {
+            log.info("illegal exception");
             throw new IllegalArgumentException(message);
         }
+        return result;
     }
 }
