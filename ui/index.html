@@ -9,13 +9,17 @@
 <body>
     <div id="container">
         <div id="inputContainer">
-            <input type="text" id="textInput" placeholder="Enter text">
+            <textarea id="textInput" placeholder="Enter text"></textarea>
             <button onclick="submitText()">Submit</button>
         </div>
+        <div id="loadingIndicator" class="centered" style="display: none;">Loading...</div>
         <div id="resultContainer">
             <div id="result"></div>
+            <button id="downloadButton" style="display: none;" onclick="downloadYaml()">Download YAML</button>
         </div>
     </div>
-    <script type="module" src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.min.js"></script>
+    <script src="script.js"></script>
+    
 </body>
 </html>
